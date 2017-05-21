@@ -63,9 +63,7 @@ export class NotificationService {
   }
 
   displaySuccessMessage(message: string) {
-    this._notification.alert(message, function () {
-      this._notification.success(message);
-    });
+    alertify.alert(MessageConstants.TITLE_DIALOG, message, function(){ alertify.success(message); });
 
   }
   displayErrorMessage(message: string) {

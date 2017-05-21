@@ -3,6 +3,7 @@ import { LoggedInUser } from '../domain/logged-in.user';
 import { SystemConstants } from '../common/system.constants';
 import { Http, RequestOptions, Headers, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class AuthenticationService {
@@ -15,14 +16,14 @@ export class AuthenticationService {
   logIn(userName: string, password: string) {
 
     let body =
-      "userName=" + encodeURIComponent(userName)
-      + "password=" + encodeURIComponent(password)
+      "username=" + encodeURIComponent(userName)
+      + "&password=" + encodeURIComponent(password)
       + "&grant_type=password";
     let headers = new Headers();
-    headers.append("Content_type", SystemConstants.HEADER_CONTENT_TYPE_URLENDCODED);
+    headers.append("Content-type", SystemConstants.HEADER_CONTENT_TYPE_URLENDCODED);
     let options = new RequestOptions({ headers: headers });
-    this._http.post(
-      SystemConstants.URL_LOCAL_HOST_API_ENDPOINT + SystemConstants.URL_OAUTH, body, options).map((response: Response) => {
+    return this._http.post(SystemConstants.URL_LOCAL_HOST_API_ENDPOINT + SystemConstants.URL_OAUTH_TOKEN, body, options)
+      .map((response: Response) => {
         let user: LoggedInUser = response.json();
         if (user && user.access_token) {
           localStorage.removeItem(SystemConstants.CURRENT_USER);
