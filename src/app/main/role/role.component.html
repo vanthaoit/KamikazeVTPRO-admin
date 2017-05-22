@@ -5,18 +5,8 @@
       <div class="x_title">
         <h2>Danh sách <small>nhóm người dùng</small></h2>
         <ul class="nav navbar-right panel_toolbox">
-          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-          </li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="#">Settings 1</a>
-              </li>
-              <li><a href="#">Settings 2</a>
-              </li>
-            </ul>
-          </li>
-          <li><a class="close-link"><i class="fa fa-close"></i></a>
+          <li>
+            <button class="btn btn-success" (click)="showModal()">Thêm mới</button>
           </li>
         </ul>
         <div class="clearfix"></div>
@@ -31,15 +21,12 @@
                 <th>
                   <input type="checkbox" id="check-all" class="">
                 </th>
-                <th class="column-title">#</th>
-                <th class="column-title">Invoice </th>
-                <th class="column-title">Invoice Date </th>
-                <th class="column-title">Order </th>
-                <th class="column-title">Bill to Name </th>
-                <th class="column-title">Status </th>
-                <th class="column-title">Amount </th>
-                <th class="column-title no-link last"><span class="nobr">Action</span>
-                </th>
+                <th class="column-title">Thứ tự</th>
+                <th class="column-title">Tên </th>
+                <th class="column-title">Mô tả quyền </th>
+                <th></th>
+
+
                 <th class="bulk-actions" colspan="7">
                   <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
                 </th>
@@ -47,35 +34,17 @@
             </thead>
 
             <tbody>
-              <tr class="even pointer">
+              <tr class="even pointer" *ngFor="let item of roles;let rowIndex=index">
 
                 <td class="a-center ">
                   <input type="checkbox" class="" name="table_records">
                 </td>
-                <td>1</td>
-                <td class=" ">121000040</td>
-                <td class=" ">May 23, 2014 11:47:56 PM </td>
-                <td class=" ">121000210 <i class="success fa fa-long-arrow-up"></i></td>
-                <td class=" ">John Blank L</td>
-                <td class=" ">Paid</td>
-                <td class="a-right a-right ">$7.45</td>
-                <td class=" last"><a href="#">View</a>
-                </td>
-              </tr>
-              <tr class="odd pointer">
-
-                <td class="a-center ">
-                  <input type="checkbox" class="" name="table_records">
-                </td>
-                <td>2</td>
-                <td class=" ">121000039</td>
-                <td class=" ">May 23, 2014 11:30:12 PM</td>
-                <td class=" ">121000208 <i class="success fa fa-long-arrow-up"></i>
-                </td>
-                <td class=" ">John Blank L</td>
-                <td class=" ">Paid</td>
-                <td class="a-right a-right ">$741.20</td>
-                <td class=" last"><a href="#">View</a>
+                <td>{{rowIndex+1}}</td>
+                <td class=" ">{{item.Name}}</td>
+                <td class=" ">{{item.Description}}</td>
+                <td>
+                  <button class="btn btn-primary"><i class="fa fa-pencil"></i></button>
+                  <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
                 </td>
               </tr>
 
@@ -85,10 +54,57 @@
             <pagination [maxSize]="maxSize" [itemsPerPage]="pageSize" [rotate]="false" (pageChanged)="pageChanged($event)" [totalItems]="totalPages"
               [(ngModel)]="pageIndex" [boundaryLinks]="true" class="pagination-sm" previousText="&lsaquo;" nextText="&rsaquo;"
               firstText="&laquo;" lastText="&raquo;"></pagination>
-              <pre class="card card-block card-header">Page: {{pageIndex}} / {{totalPages}}</pre>
+            <pre class="card card-block card-header">Page: {{pageIndex}} / {{totalPages}}</pre>
           </div>
 
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal Edit Add-->
+
+<div bsModal #createUpdateModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Thao tác quyền</h4>
+        <button type="button" class="close pull-right" (click)="createUpdateModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal form-label-left" novalidate #createUpdateForm="ngForm" (ngSubmit)="saveChange(createUpdateForm.valid)" *ngIf="entity">
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên nhóm</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="hidden" [(ngModel)]="entity.Id" name="id" />
+              <input type="text" #name="ngModel" name="name" [(ngModel)]="entity.Name" required minlength="3" class="form-control" />
+              <small class="text-danger" [hidden]="name.valid || (name.pristine && !createUpdateForm.submitted)">
+                Bạn phải nhập tên ít nhất 3 ký tự
+              </small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Mô tả</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="hidden" name="id" />
+              <textarea #description="ngModel" name="description" [(ngModel)]="entity.Description" required minlength="10" class="form-control"></textarea>
+              <small class="text-danger" [hidden]="description.valid || (description.pristine && !createUpdateForm.submitted)">
+                Bạn phải nhập mô tả ít nhất 10 ký tự
+              </small>
+            </div>
+          </div>
+          <div class="ln_solid"></div>
+          <div class="form-group">
+            <div class="col-md-9 col-sm-9 col-xs-9 col-md-offset-3">
+              <button type="button" class="btn btn-primary" (click)="createUpdateModal.hide()">Thoát</button>
+              <button type="submit" class="btn btn-success" [disabled]="!createUpdateForm.form.valid">Cập nhật</button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>

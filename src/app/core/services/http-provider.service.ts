@@ -9,9 +9,12 @@ import { SystemConstants } from '../common/system.constants';
 @Injectable()
 export class HttpProviderService {
 
-  constructor(private _http: Http, private _header: Headers,
-    private _route: Routes, private _notificationService: NotificationService,
-    private _authenticationService: AuthenticationService) { }
+  private _header:Headers;
+  constructor(private _http: Http, private _notificationService: NotificationService,
+    private _authenticationService: AuthenticationService) { 
+      this._header = new Headers();
+    }
+
 
   get(uri: string) {
     this.getHeader();
@@ -38,7 +41,7 @@ export class HttpProviderService {
     let data = response.json();
     return data || {}
   }
-  private getHeader() {
+  private getHeader():void {
     this._header.delete(SystemConstants.AUTHORIZATION);
     this._header.append(SystemConstants.AUTHORIZATION, SystemConstants.BEARER + this._authenticationService.getLogInUser().access_token);
   }
