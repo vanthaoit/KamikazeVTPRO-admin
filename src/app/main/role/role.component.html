@@ -43,8 +43,8 @@
                 <td class=" ">{{item.Name}}</td>
                 <td class=" ">{{item.Description}}</td>
                 <td>
-                  <button class="btn btn-primary"><i class="fa fa-pencil"></i></button>
-                  <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                  <button class="btn btn-primary" (click)=showDetail(item.Id)><i class="fa fa-pencil"></i></button>
+                  <button class="btn btn-danger" (click)="deleteRole(item.Id)"><i class="fa fa-trash"></i></button>
                 </td>
               </tr>
 

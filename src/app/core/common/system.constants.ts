@@ -7,6 +7,7 @@ export class SystemConstants {
     public static BEARER = "Bearer";
 
     public static HEADER_CONTENT_TYPE_URLENDCODED = "application/x-www-form-urlencoded";
+    public static HEADER_CONTENT_TYPE_JSON = "application/json";
     public static URL_OAUTH_TOKEN = "/api/oauth/token";
 
 

@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { PaginationModule, ModalModule } from 'ngx-bootstrap';
 import { FormsModule } from '@angular/forms';
 
+import { UtilityService } from '../../core/services/utility.service';
 import { HttpProviderService } from '../../core/services/http-provider.service';
 import { NotificationService } from '../../core/services/notification.service';
 
@@ -23,7 +24,7 @@ export const roleRoutes: Routes = [
     FormsModule,
     RouterModule.forChild(roleRoutes)
   ],
-  providers: [HttpProviderService, NotificationService],
+  providers: [HttpProviderService, NotificationService,UtilityService],
   declarations: [RoleComponent]
 })
 export class RoleModule { }

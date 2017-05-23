@@ -52,23 +52,52 @@ export class RoleComponent implements OnInit {
   showModal() {
     this.entity = {};
     this.createUpdateModal.show();
-    
+
+  }
+  showDetail(id: string) {
+    this._httpProviderService.get("/api/applicationRole/getDetail?id=" + id)
+      .subscribe(result => {
+        this.entity = result;
+        console.log("result=" + JSON.stringify(result));
+        this.createUpdateModal.show();
+      }, error => {
+        this._notificationService.displayErrorMessage(MessageConstants.SYSTEM_ERROR_MSG);
+      });
   }
   saveChange(isValid: boolean) {
-
+    var data = JSON.stringify(this.entity);
     if (isValid) {
       if (this.entity.Id == undefined) {
-        this._httpProviderService.post("/api/applicationRole/add", this.entity)
+        this._httpProviderService.post("/api/applicationRole/add", data)
           .subscribe(result => {
             this.loadData();
             this.createUpdateModal.hide();
-            this._notificationService.displaySuccessMessage(MessageConstants.CREATED_OK_MSG);
+            this._notificationService.displaySuccessMessage(MessageConstants.CREATED_OK_MSG+" "+ result.Name);
           }, error => {
-            this._notificationService.displayErrorMessage(MessageConstants.SYSTEM_ERROR_MSG);
+            this._httpProviderService.handleError(error);
+          });
+      } else {
+        this._httpProviderService.post("/api/applicationRole/update", data)
+          .subscribe(result => {
+            this.loadData();
+            this.createUpdateModal.hide();
+            this._notificationService.displaySuccessMessage(MessageConstants.UPDATED_OK_MSG+ " "+result.Name);
+          }, error => {
+            this._httpProviderService.handleError(error);
           });
       }
 
     }
+  }
+  deleteRole(id: string) {
+    this._notificationService.displayConfirmDialog(MessageConstants.CONFIRM_DELETE_MSG, () => {
+      this._httpProviderService.delete("/api/applicationRole/delete", "id", id).subscribe(result => {
+        this._notificationService.displaySuccessMessage(MessageConstants.DELETED_OK_MSG+ " "+ result);
+        this.loadData();
+      }, error => {
+        this._httpProviderService.handleError(error);
+      });
+    });
   }
 
 }
