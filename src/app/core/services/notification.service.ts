@@ -85,4 +85,21 @@ export class NotificationService {
       }
     });
   }
+  printSuccessMessage(message: string) {
+
+    this._notification.success(message);
+  }
+
+  printErrorMessage(message: string) {
+    this._notification.error(message);
+  }
+
+  printConfirmationDialog(message: string, okCallback: () => any) {
+    this._notification.confirm(message, function (e) {
+      if (e) {
+        okCallback();
+      } else {
+      }
+    });
+  }
 }
