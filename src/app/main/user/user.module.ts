@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserComponent } from './user.component';
 import {RouterModule,Routes} from '@angular/router';
+import { HttpProviderService } from '../../core/services/http-provider.service';
 
 export const userRoutes: Routes =[
   //localhost: 4200/main/user
@@ -15,6 +16,7 @@ export const userRoutes: Routes =[
     CommonModule,
     RouterModule.forChild(userRoutes)
   ],
-  declarations: [UserComponent]
+  declarations: [UserComponent],
+  providers:[HttpProviderService]
 })
 export class UserModule { }

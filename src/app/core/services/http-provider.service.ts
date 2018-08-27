@@ -21,7 +21,7 @@ export class HttpProviderService {
 
 
   get(uri: string) {
-    this.getHeader();
+    //this.getHeader();
     return this._http.get(SystemConstants.URL_LOCAL_HOST_API_ENDPOINT + uri, { headers: this._header }).map(this.extractData);
 
   }

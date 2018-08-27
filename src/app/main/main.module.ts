@@ -12,6 +12,7 @@ import { RouterModule } from '@angular/router';
 import { mainRoutes } from './main.routes';
 import { AuthenticationService } from '../core/services/authentication.service';
 import { UtilityService } from '../core/services/utility.service';
+import { ProductModule } from './product/product.module';
 
 
 
@@ -20,6 +21,7 @@ import { UtilityService } from '../core/services/utility.service';
     CommonModule,
     HomeModule,
     UserModule,
+    ProductModule,
     RouterModule.forChild(mainRoutes)
   ],
   providers: [UtilityService, AuthenticationService],
